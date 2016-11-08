@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="tickide.lexin.com.tickide">
+
+    <!-- Declare the Bluetooth permission -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="landscape"
+            android:theme="@style/AppTheme.NoActionBar">
+
+        </activity>
+        <activity
+            android:name=".ConnectBluetooth"
+            android:screenOrientation="landscape">
+
+        </activity>
+        <activity
+            android:name=".Register"
+            android:label="@string/register">
+
+        </activity>
+
+        <activity
+            android:name=".ForgetPsd"
+            android:label="@string/ForgetPsd">
+
+        </activity>
+        <activity
+            android:name=".LoginActivity"
+            android:label="@string/LoginActivity">
+
+        </activity>
+        <activity
+            android:name=".LoginOrRegister"
+            android:label="@string/LoginActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <meta-data
+            android:name="UMENG_APPKEY"
+            android:value="58214740b27b0a5b130001e9">
+
+        </meta-data>
+        <meta-data
+            android:name="UMENG_MESSAGE_SECRET"
+            android:value="576b5925ed4f9d6cf41543272cd85f76">
+
+        </meta-data>
+        <meta-data
+            android:name="UMENG_CHANNEL"
+            android:value="Channel ID">
+
+        </meta-data>
+    </application>
+
+</manifest>
