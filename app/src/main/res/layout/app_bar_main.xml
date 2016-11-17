@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:dpv="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
@@ -17,6 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
+            android:visibility="gone"
             app:popupTheme="@style/AppTheme.PopupOverlay" />
 
     </android.support.design.widget.AppBarLayout>
@@ -27,8 +30,26 @@
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@android:drawable/ic_dialog_email" />
+        android:layout_gravity="bottom|start"
+        android:layout_marginBottom="@dimen/fab_margin"
+        android:visibility="gone"
+        android:layout_marginLeft="95dp"
+        app:srcCompat="@android:drawable/stat_sys_download" />
+
+    <tickide.lexin.com.tickide.Views.MyProgressBar
+        android:id="@+id/myprogressBar"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        app:style="PERCENT"
+        app:circle_color="@color/colorAccent"
+        app:circle_progress_color="@color/colorPrimaryDark"
+        app:circle_width="0"
+        app:text_size="50"
+        app:text_color="@android:color/white"
+        app:is_sector="SECTOR"
+        android:layout_gravity="bottom|start"
+        android:layout_marginBottom="@dimen/fab_margin"
+        android:layout_marginLeft="95dp"
+        />
 
 </android.support.design.widget.CoordinatorLayout>

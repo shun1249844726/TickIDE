@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">TickIDE</string>
-
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
@@ -9,4 +8,6 @@
     <string name="register">注册</string>
     <string name="ForgetPsd">找回密码</string>
     <string name="LoginActivity">登录</string>
+    <string name="debug_mode">调试模式</string>
+
 </resources>

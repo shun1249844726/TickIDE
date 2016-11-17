@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+	<declare-styleable name="WaveView">
+		<attr name="above_wave_color" format="color"/>
+		<attr name="blow_wave_color" format="color"/>
+		<attr name="progress" format="integer"/>
+        <attr name="wave_length" format="enum">
+            <enum name="large" value="1"/>
+            <enum name="middle" value="2"/>
+            <enum name="little" value="3"/>
+        </attr>
+        <attr name="wave_height" format="enum">
+            <enum name="large" value="1"/>
+            <enum name="middle" value="2"/>
+            <enum name="little" value="3"/>
+        </attr>
+        <attr name="wave_hz" format="enum">
+            <enum name="fast" value="1"/>
+            <enum name="normal" value="2"/>
+            <enum name="slow" value="3"/>
+        </attr>
+	</declare-styleable>
+
+	<declare-styleable name="Themes">
+		<attr name="waveViewStyle" format="reference"/>
+	</declare-styleable>
+
+    <declare-styleable name="MyProgressBar">
+        <attr name="circle_color"  format="color"/>
+        <attr name="circle_progress_color" format="color"/>
+        <attr name="circle_width"  format="integer"/>
+        <attr name="text_color" format="color"/>
+        <attr name="text_size" format="integer"/>
+        <attr name="max_progress" format="integer"/>
+        <attr name="is_sector" >
+            <enum name="SECTOR" value="1"/>
+            <enum name="CIRCLE" value="0"/>
+        </attr>
+        <attr name="style">
+            <enum name="FRACTION" value="1"/>
+            <enum name="PERCENT" value="2"/>
+            <enum name="EMPTY" value="3"/>
+        </attr>
+    </declare-styleable>
+</resources>

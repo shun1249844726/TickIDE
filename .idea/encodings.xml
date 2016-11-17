@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/app/src/main/res/drawable/devicefmt.xml" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/drawable/download_btn.xml" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/layout/devicefmt.xml" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/layout/service_child_fmt.xml" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/layout/service_grounp_fmt.xml" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/layout/service_page.xml" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/mipmap-mdpi/btn_download.png" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/mipmap-mdpi/btn_download_pressed.png" charset="GBK" />
     <file url="PROJECT" charset="UTF-8" />
   </component>
 </project>
