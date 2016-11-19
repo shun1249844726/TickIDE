@@ -59,16 +59,15 @@ public class MyProgressBar extends View {
         //初始化画笔
         paint = new Paint(Paint.ANTI_ALIAS_FLAG);
     }
-
     public MyProgressBar(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(context, attrs);
-    }
+        paint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
+    }
     public MyProgressBar(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(context, attrs);
-
     }
 
     private void init(Context context, AttributeSet attrs) {
@@ -140,6 +139,7 @@ public class MyProgressBar extends View {
 
                 break;
             case PRECENT:
+                System.out.println("progress:"+this.max_progress);
                 String content2 ="";
                 if (max_progress == 0){
                     content2 = "下载";
@@ -227,6 +227,7 @@ public class MyProgressBar extends View {
      */
     public MyProgressBar setMax_progress(int max_progress) {
         this.max_progress = (float) (max_progress * 3.6);
+        invalidate();
         return this;
     }
 
