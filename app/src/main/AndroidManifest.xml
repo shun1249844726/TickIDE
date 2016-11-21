@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="tickide.lexin.com.tickide">
 
     <!-- Declare the Bluetooth permission -->
@@ -15,6 +16,9 @@
         android:name="android.hardware.bluetooth_le"
         android:required="true" />
     <application
+
+        android:name=".MyApplication"
+        tools:replace = "android:allowBackup"
         android:allowBackup="true"
         android:icon="@mipmap/logo"
         android:label="@string/app_name"
@@ -60,6 +64,7 @@
             android:name=".BLE.UploadProgram"
             android:screenOrientation="landscape">
         </activity>
+
         <activity
             android:name=".BLE.TalkActivity">
         </activity>
@@ -78,7 +83,31 @@
         <meta-data
             android:name="UMENG_CHANNEL"
             android:value="Channel ID">
-        </meta-data>
+        </meta-data>\
+
+
+        <activity
+            android:name=".FeedBack.DemoLoginActivity"
+            android:alwaysRetainTaskState="true"
+            android:configChanges="keyboardHidden|orientation"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/ContentOverlay">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.action.CREATE_SHORTCUT" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name="com.journeyapps.barcodescanner.CaptureActivity"
+            android:screenOrientation="fullSensor"
+            tools:replace="screenOrientation" />
+
+        <activity android:name=".FeedBack.DemoFragmentActivity" />
     </application>
+
+
 
 </manifest>

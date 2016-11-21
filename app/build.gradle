@@ -7,7 +7,7 @@ android {
         applicationId "tickide.lexin.com.tickide"
         minSdkVersion 15
         targetSdkVersion 24
-        versionCode 1
+        versionCode
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
@@ -30,4 +30,19 @@ dependencies {
     compile files('libs/fastjson-1.2.13.jar')
     compile project(':PushSDK')
     compile files('libs/nineoldandroids-2.4.0.jar')
+
+    compile(name:'alisdk-feedback-2.2.0', ext:'aar')
+    compile(name:'securityguardaar3-5.1.81', ext:'aar')
+    compile files('libs/app-monitor-sdk-2.5.1.1_for_bc_proguard.jar')
+    compile files('libs/utdid4all-1.1.5.3_proguard.jar')
+
+    //二维码依赖库
+    compile 'com.google.zxing:core:3.2.0'
+    compile 'com.journeyapps:zxing-android-embedded:3.0.2@aar'
+}
+
+repositories {
+    flatDir {
+        dirs 'libs'
+    }
 }

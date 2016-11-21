@@ -9,5 +9,7 @@
     <string name="ForgetPsd">找回密码</string>
     <string name="LoginActivity">登录</string>
     <string name="debug_mode">调试模式</string>
+    <string name="thanks_report">\u3000\u3000感谢大家给我们反馈信息，我们软件还在测试阶段，希望大家提出宝贵的意见，帮助学长发现更多的bug,来改进我们的应用。
+    我们会在后续公示页面中列出你们的名单.\n\u3000\u3000谢谢！</string>
 
 </resources>

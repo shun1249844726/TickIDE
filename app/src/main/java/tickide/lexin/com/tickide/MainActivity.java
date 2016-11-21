@@ -26,6 +26,7 @@ import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
@@ -136,12 +137,16 @@ public class MainActivity extends AppCompatActivity
         webView = (WebView) findViewById(R.id.webView);
         webView.setInitialScale(200);
         webView.loadUrl("file:///android_asset/mblockly/blockly/apps/mixly/index.html");
+        WebSettings webSettings = webView.getSettings();
 
         //如果访问的页面中有Javascript，则webview必须设置支持Javascript。
-        webView.getSettings().setJavaScriptEnabled(true);
-        webView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
+        webSettings.setJavaScriptEnabled(true);
+        webSettings.setJavaScriptCanOpenWindowsAutomatically(true);
         webView.setWebChromeClient(new WebChromeClient());
-        webView.getSettings().setDomStorageEnabled(true);
+        webSettings.setDomStorageEnabled(true);
+        //优先使用缓存
+        webSettings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
+
         webView.addJavascriptInterface(this, "test");
         webView.setWebViewClient(new WebViewClient() {
             @Override
@@ -184,6 +189,7 @@ public class MainActivity extends AppCompatActivity
             }
         });
         testText = (TextView) findViewById(R.id.testtext);
+        testText.setVisibility(View.GONE);
         testText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
