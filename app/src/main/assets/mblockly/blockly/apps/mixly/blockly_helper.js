@@ -102,7 +102,7 @@ function auto_save_and_restore_blocks() {
   // initialization is not affected from a failed load.
   window.setTimeout(restore_blocks, 0);
   // Hook a save function onto unload.
-  bindEvent(window, 'unload', backup_blocks);
+  bindEvent(window, 'beforeunload', backup_blocks);
   tabClick(selected);
 
   // Init load event.

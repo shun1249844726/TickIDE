@@ -27,9 +27,12 @@ import android.os.Message;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.animation.LinearOutSlowInInterpolator;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
@@ -39,6 +42,7 @@ import android.widget.ListView;
 import android.widget.SimpleExpandableListAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
+
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
@@ -53,13 +57,14 @@ import tickide.lexin.com.tickide.BLE.tools.Tools;
 import tickide.lexin.com.tickide.MainActivity;
 import tickide.lexin.com.tickide.R;
 import tickide.lexin.com.tickide.Views.CircleWaveView;
+import tickide.lexin.com.tickide.Views.ToastUtil;
 
 
 /**
  * Created by xushun on 2016/11/9.
  */
 
-public class ConnectBle extends Activity{
+public class ConnectBle extends AppCompatActivity{
     private BluetoothDevice device;
     private CircleWaveView mCircleWaveView;
 
@@ -103,17 +108,48 @@ public class ConnectBle extends Activity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_connect_ble);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_connectBLE);
+        toolbar.setNavigationIcon(R.drawable.ali_feedback_icon_back_white);
+        toolbar.setTitle("返回");
+        toolbar.setTitleTextColor(Color.WHITE);
+        setSupportActionBar(toolbar);
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(ConnectBle.this,MainActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
         if (Build.VERSION.SDK_INT >= 23) {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 11);
             }
         }
+
         initView();
 
         bindService(new Intent(this, BLEService.class), connection,
                 Context.BIND_AUTO_CREATE);
 
-
+//        PushAgent.getInstance(ConnectBle.this).onAppStart();
+//        PushAgent mPushAgent = PushAgent.getInstance(this);
+//        //注册推送服务，每次调用register方法都会回调该接口
+//        mPushAgent.register(new IUmengRegisterCallback() {
+//
+//            @Override
+//            public void onSuccess(String deviceToken) {
+//                //注册成功会返回device token
+//            }
+//
+//            @Override
+//            public void onFailure(String s, String s1) {
+//
+//            }
+//        });
 
     }
 
@@ -217,6 +253,8 @@ public class ConnectBle extends Activity{
         // 注册广播接收器
         registerReceiver(bluetoothReceiver, intentFilter);
     }
+
+
     private class BluetoothReceiver extends BroadcastReceiver {
 
         @Override
@@ -558,7 +596,6 @@ public class ConnectBle extends Activity{
     protected void onDestroy() {
         super.onDestroy();
         System.out.println("ondestroy");
-
         unbindService(connection);
     }
 }

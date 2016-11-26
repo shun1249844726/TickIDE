@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Message;
@@ -35,8 +36,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSONObject;
-import com.umeng.message.IUmengRegisterCallback;
-import com.umeng.message.PushAgent;
 
 import java.io.DataInput;
 import java.io.DataInputStream;
@@ -53,13 +52,17 @@ import java.util.regex.Pattern;
 
 import tickide.lexin.com.tickide.BLE.BLEService;
 import tickide.lexin.com.tickide.BLE.ConnectBle;
+import tickide.lexin.com.tickide.BLE.TalkActivity;
 import tickide.lexin.com.tickide.BLE.UploadProgram;
 import tickide.lexin.com.tickide.BLE.tools.Tools;
 import tickide.lexin.com.tickide.DataApi.ReturnHex;
+import tickide.lexin.com.tickide.FeedBack.DemoLoginActivity;
 import tickide.lexin.com.tickide.Utils.CustomToast;
 import tickide.lexin.com.tickide.Utils.FileUtils;
 import tickide.lexin.com.tickide.Views.MyProgressBar;
 import tickide.lexin.com.tickide.Views.ToastUtil;
+import tickide.lexin.com.tickide.update.AppUtils;
+import tickide.lexin.com.tickide.update.UpdateChecker;
 
 import static tickide.lexin.com.tickide.Utils.FileUtils.getMsg;
 import static tickide.lexin.com.tickide.Utils.FileUtils.readProgram;
@@ -71,7 +74,7 @@ import org.json.JSONException;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-    private PushAgent mPushAgent;
+    //    private PushAgent mPushAgent;
     Context context;
     private WebView webView;
     HttpURLConnection submitCodeConn = null;
@@ -118,22 +121,21 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        PushAgent.getInstance(context).onAppStart();
-
-        PushAgent mPushAgent = PushAgent.getInstance(this);
-        //注册推送服务，每次调用register方法都会回调该接口
-        mPushAgent.register(new IUmengRegisterCallback() {
-
-            @Override
-            public void onSuccess(String deviceToken) {
-                //注册成功会返回device token
-            }
-
-            @Override
-            public void onFailure(String s, String s1) {
-
-            }
-        });
+//        PushAgent.getInstance(context).onAppStart();
+//        PushAgent mPushAgent = PushAgent.getInstance(this);
+//        //注册推送服务，每次调用register方法都会回调该接口
+//        mPushAgent.register(new IUmengRegisterCallback() {
+//
+//            @Override
+//            public void onSuccess(String deviceToken) {
+//                //注册成功会返回device token
+//            }
+//
+//            @Override
+//            public void onFailure(String s, String s1) {
+//
+//            }
+//        });
         webView = (WebView) findViewById(R.id.webView);
         webView.setInitialScale(200);
         webView.loadUrl("file:///android_asset/mblockly/blockly/apps/mixly/index.html");
@@ -148,6 +150,7 @@ public class MainActivity extends AppCompatActivity
         webSettings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
 
         webView.addJavascriptInterface(this, "test");
+
         webView.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -156,7 +159,10 @@ public class MainActivity extends AppCompatActivity
                 view.loadUrl(url);
                 return true;
             }
+
+
         });
+
         final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -201,34 +207,54 @@ public class MainActivity extends AppCompatActivity
                 programIndex = 0;
                 program = readProgram();
 //                        myProgressBar.setMax_progress(0);
-
                 new MainActivity.uploadthread().start();
             }
         });
 ////下面
-        setBroadcastReceiver();
-        mBluetoothGattCharacteristic = Tools.mBLEService.mBluetoothGatt
-                .getServices().get(3)
-                .getCharacteristics().get(5);
-        // 查看是有什么权限
-        proper = mBluetoothGattCharacteristic.getProperties();
-        if (0 != (proper & 0x02)) { // 可读
+        if (!Tools.mBLEService.isConnected()) {
+            Toast.makeText(MainActivity.this, "未连接设备", Toast.LENGTH_SHORT).show();
+        } else {
+            setBroadcastReceiver();
+            mBluetoothGattCharacteristic = Tools.mBLEService.mBluetoothGatt
+                    .getServices().get(3)
+                    .getCharacteristics().get(5);
+            // 查看是有什么权限
+            proper = mBluetoothGattCharacteristic.getProperties();
+            if (0 != (proper & 0x02)) { // 可读
+            }
+            if ((0 != (proper & BluetoothGattCharacteristic.PROPERTY_WRITE))
+                    || (0 != (proper & BluetoothGattCharacteristic.PROPERTY_WRITE_NO_RESPONSE))) { // 可写
+            }
+            if ((0 != (proper & BluetoothGattCharacteristic.PROPERTY_NOTIFY))
+                    || (0 != (proper & BluetoothGattCharacteristic.PROPERTY_INDICATE))) { // 通知
+                Tools.mBLEService.mBluetoothGatt.setCharacteristicNotification(
+                        mBluetoothGattCharacteristic, true);
+                BluetoothGattDescriptor descriptor = mBluetoothGattCharacteristic
+                        .getDescriptor(UUID
+                                .fromString("00002902-0000-1000-8000-00805f9b34fb"));
+                descriptor
+                        .setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
+                Tools.mBLEService.mBluetoothGatt.writeDescriptor(descriptor);
+            }
         }
-        if ((0 != (proper & BluetoothGattCharacteristic.PROPERTY_WRITE))
-                || (0 != (proper & BluetoothGattCharacteristic.PROPERTY_WRITE_NO_RESPONSE))) { // 可写
-        }
-        if ((0 != (proper & BluetoothGattCharacteristic.PROPERTY_NOTIFY))
-                || (0 != (proper & BluetoothGattCharacteristic.PROPERTY_INDICATE))) { // 通知
-            Tools.mBLEService.mBluetoothGatt.setCharacteristicNotification(
-                    mBluetoothGattCharacteristic, true);
-            BluetoothGattDescriptor descriptor = mBluetoothGattCharacteristic
-                    .getDescriptor(UUID
-                            .fromString("00002902-0000-1000-8000-00805f9b34fb"));
-            descriptor
-                    .setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
-            Tools.mBLEService.mBluetoothGatt.writeDescriptor(descriptor);
-        }
+
 ////上面
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        webView.loadUrl("javascript:backup_blocks()");
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        // TODO Auto-generated method stub
+        if (webView != null) {
+            webView.destroy();
+        }
+        super.onDestroy();
     }
 
     @JavascriptInterface
@@ -512,14 +538,37 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_camera) {
+
+            if (Tools.mBLEService.isConnected()) {
+                Intent intent = new Intent(getApplicationContext(),
+                        TalkActivity.class);
+                intent.putExtra("one", 3);
+                intent.putExtra("two", 5);
+                startActivityForResult(intent, 0);
+            } else {
+                Toast.makeText(MainActivity.this, "未连接设备", Toast.LENGTH_SHORT).show();
+            }
+
             // Handle the camera action
         } else if (id == R.id.nav_gallery) {
+            Intent intent = new Intent(MainActivity.this, DemoLoginActivity.class);
+            startActivity(intent);
 
         } else if (id == R.id.nav_slideshow) {
+            UpdateChecker.checkForDialog(MainActivity.this);
+            System.out.println("当前版本信息: versionName = " + AppUtils.getVersionName(this) + " versionCode = " + AppUtils.getVersionCode(this));
 
-        } else if (id == R.id.nav_manage) {
+        } else if (id == R.id.nav_bluetooth) {
+            Intent intent = new Intent(MainActivity.this, ConnectBle.class);
+            startActivity(intent);
+
 
         } else if (id == R.id.nav_share) {
+            Intent intent= new Intent();
+            intent.setAction("android.intent.action.VIEW");
+            Uri content_url = Uri.parse("http://www.jianshu.com/users/80e0ec7f5d09/latest_articles");
+            intent.setData(content_url);
+            startActivity(intent);
 
         } else if (id == R.id.nav_send) {
 
@@ -544,6 +593,7 @@ public class MainActivity extends AppCompatActivity
         // 注册广播接收器
         registerReceiver(bluetoothReceiver, intentFilter1);
     }
+
 
     private class BroadcastReceiver extends android.content.BroadcastReceiver {
         @Override
@@ -648,7 +698,7 @@ public class MainActivity extends AppCompatActivity
                         String addressPackage = "";
                         addressPackage = "55" + to2String(laddress) + to2String(haddress) + "20";
 
-                        System.out.println("addressPackage。"+ addressPackage);
+                        System.out.println("addressPackage。" + addressPackage);
 
                         sendMessage(getMsg(addressPackage, 1));
 
